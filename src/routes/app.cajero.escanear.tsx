@@ -27,7 +27,11 @@ function EscanearPage() {
           .stop()
           .catch(() => {})
           .finally(() => {
-            inst.clear().catch(() => {});
+            try {
+              inst.clear();
+            } catch {
+              /* ignore */
+            }
           });
       }
     };
@@ -75,7 +79,11 @@ function EscanearPage() {
     const inst = scannerRef.current;
     if (inst) {
       await inst.stop().catch(() => {});
-      await inst.clear().catch(() => {});
+      try {
+        inst.clear();
+      } catch {
+        /* ignore */
+      }
       scannerRef.current = null;
     }
     setScanning(false);

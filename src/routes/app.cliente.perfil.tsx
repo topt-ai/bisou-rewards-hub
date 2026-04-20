@@ -55,10 +55,9 @@ function PerfilPage() {
 
   const saveField = async (field: "telefono" | "fecha_nacimiento") => {
     const value = form[field] || null;
-    const { error } = await supabase
-      .from("profiles")
-      .update({ [field]: value })
-      .eq("id", profile.id);
+    const updates =
+      field === "telefono" ? { telefono: value } : { fecha_nacimiento: value };
+    const { error } = await supabase.from("profiles").update(updates).eq("id", profile.id);
     if (error) {
       toast.error("No se pudo actualizar");
       return;

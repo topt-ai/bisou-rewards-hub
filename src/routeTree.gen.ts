@@ -15,6 +15,10 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppClienteRouteImport } from './routes/app.cliente'
+import { Route as AppClienteRecompensasRouteImport } from './routes/app.cliente.recompensas'
+import { Route as AppClienteQrRouteImport } from './routes/app.cliente.qr'
+import { Route as AppClientePerfilRouteImport } from './routes/app.cliente.perfil'
+import { Route as AppClienteInicioRouteImport } from './routes/app.cliente.inicio'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -46,6 +50,26 @@ const AppClienteRoute = AppClienteRouteImport.update({
   path: '/app/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppClienteRecompensasRoute = AppClienteRecompensasRouteImport.update({
+  id: '/recompensas',
+  path: '/recompensas',
+  getParentRoute: () => AppClienteRoute,
+} as any)
+const AppClienteQrRoute = AppClienteQrRouteImport.update({
+  id: '/qr',
+  path: '/qr',
+  getParentRoute: () => AppClienteRoute,
+} as any)
+const AppClientePerfilRoute = AppClientePerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AppClienteRoute,
+} as any)
+const AppClienteInicioRoute = AppClienteInicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
+  getParentRoute: () => AppClienteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,7 +77,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/app/cliente': typeof AppClienteRoute
+  '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/cliente/inicio': typeof AppClienteInicioRoute
+  '/app/cliente/perfil': typeof AppClientePerfilRoute
+  '/app/cliente/qr': typeof AppClienteQrRoute
+  '/app/cliente/recompensas': typeof AppClienteRecompensasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -61,7 +89,11 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/app/cliente': typeof AppClienteRoute
+  '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/cliente/inicio': typeof AppClienteInicioRoute
+  '/app/cliente/perfil': typeof AppClientePerfilRoute
+  '/app/cliente/qr': typeof AppClienteQrRoute
+  '/app/cliente/recompensas': typeof AppClienteRecompensasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -70,7 +102,11 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/app/cliente': typeof AppClienteRoute
+  '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/cliente/inicio': typeof AppClienteInicioRoute
+  '/app/cliente/perfil': typeof AppClientePerfilRoute
+  '/app/cliente/qr': typeof AppClienteQrRoute
+  '/app/cliente/recompensas': typeof AppClienteRecompensasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +117,10 @@ export interface FileRouteTypes {
     | '/registro'
     | '/reset-password'
     | '/app/cliente'
+    | '/app/cliente/inicio'
+    | '/app/cliente/perfil'
+    | '/app/cliente/qr'
+    | '/app/cliente/recompensas'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +129,10 @@ export interface FileRouteTypes {
     | '/registro'
     | '/reset-password'
     | '/app/cliente'
+    | '/app/cliente/inicio'
+    | '/app/cliente/perfil'
+    | '/app/cliente/qr'
+    | '/app/cliente/recompensas'
   id:
     | '__root__'
     | '/'
@@ -97,6 +141,10 @@ export interface FileRouteTypes {
     | '/registro'
     | '/reset-password'
     | '/app/cliente'
+    | '/app/cliente/inicio'
+    | '/app/cliente/perfil'
+    | '/app/cliente/qr'
+    | '/app/cliente/recompensas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,7 +153,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RegistroRoute: typeof RegistroRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
-  AppClienteRoute: typeof AppClienteRoute
+  AppClienteRoute: typeof AppClienteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -152,8 +200,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/cliente/recompensas': {
+      id: '/app/cliente/recompensas'
+      path: '/recompensas'
+      fullPath: '/app/cliente/recompensas'
+      preLoaderRoute: typeof AppClienteRecompensasRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
+    '/app/cliente/qr': {
+      id: '/app/cliente/qr'
+      path: '/qr'
+      fullPath: '/app/cliente/qr'
+      preLoaderRoute: typeof AppClienteQrRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
+    '/app/cliente/perfil': {
+      id: '/app/cliente/perfil'
+      path: '/perfil'
+      fullPath: '/app/cliente/perfil'
+      preLoaderRoute: typeof AppClientePerfilRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
+    '/app/cliente/inicio': {
+      id: '/app/cliente/inicio'
+      path: '/inicio'
+      fullPath: '/app/cliente/inicio'
+      preLoaderRoute: typeof AppClienteInicioRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
   }
 }
+
+interface AppClienteRouteChildren {
+  AppClienteInicioRoute: typeof AppClienteInicioRoute
+  AppClientePerfilRoute: typeof AppClientePerfilRoute
+  AppClienteQrRoute: typeof AppClienteQrRoute
+  AppClienteRecompensasRoute: typeof AppClienteRecompensasRoute
+}
+
+const AppClienteRouteChildren: AppClienteRouteChildren = {
+  AppClienteInicioRoute: AppClienteInicioRoute,
+  AppClientePerfilRoute: AppClientePerfilRoute,
+  AppClienteQrRoute: AppClienteQrRoute,
+  AppClienteRecompensasRoute: AppClienteRecompensasRoute,
+}
+
+const AppClienteRouteWithChildren = AppClienteRoute._addFileChildren(
+  AppClienteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -161,8 +255,17 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegistroRoute: RegistroRoute,
   ResetPasswordRoute: ResetPasswordRoute,
-  AppClienteRoute: AppClienteRoute,
+  AppClienteRoute: AppClienteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

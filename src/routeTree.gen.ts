@@ -15,10 +15,14 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppClienteRouteImport } from './routes/app.cliente'
+import { Route as AppCajeroRouteImport } from './routes/app.cajero'
 import { Route as AppClienteRecompensasRouteImport } from './routes/app.cliente.recompensas'
 import { Route as AppClienteQrRouteImport } from './routes/app.cliente.qr'
 import { Route as AppClientePerfilRouteImport } from './routes/app.cliente.perfil'
 import { Route as AppClienteInicioRouteImport } from './routes/app.cliente.inicio'
+import { Route as AppCajeroEscanearRouteImport } from './routes/app.cajero.escanear'
+import { Route as AppCajeroCanjeRouteImport } from './routes/app.cajero.canje'
+import { Route as AppCajeroBuscarRouteImport } from './routes/app.cajero.buscar'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -50,6 +54,11 @@ const AppClienteRoute = AppClienteRouteImport.update({
   path: '/app/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppCajeroRoute = AppCajeroRouteImport.update({
+  id: '/app/cajero',
+  path: '/app/cajero',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppClienteRecompensasRoute = AppClienteRecompensasRouteImport.update({
   id: '/recompensas',
   path: '/recompensas',
@@ -70,6 +79,21 @@ const AppClienteInicioRoute = AppClienteInicioRouteImport.update({
   path: '/inicio',
   getParentRoute: () => AppClienteRoute,
 } as any)
+const AppCajeroEscanearRoute = AppCajeroEscanearRouteImport.update({
+  id: '/escanear',
+  path: '/escanear',
+  getParentRoute: () => AppCajeroRoute,
+} as any)
+const AppCajeroCanjeRoute = AppCajeroCanjeRouteImport.update({
+  id: '/canje',
+  path: '/canje',
+  getParentRoute: () => AppCajeroRoute,
+} as any)
+const AppCajeroBuscarRoute = AppCajeroBuscarRouteImport.update({
+  id: '/buscar',
+  path: '/buscar',
+  getParentRoute: () => AppCajeroRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,7 +101,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/app/cajero': typeof AppCajeroRouteWithChildren
   '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/cajero/buscar': typeof AppCajeroBuscarRoute
+  '/app/cajero/canje': typeof AppCajeroCanjeRoute
+  '/app/cajero/escanear': typeof AppCajeroEscanearRoute
   '/app/cliente/inicio': typeof AppClienteInicioRoute
   '/app/cliente/perfil': typeof AppClientePerfilRoute
   '/app/cliente/qr': typeof AppClienteQrRoute
@@ -89,7 +117,11 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/app/cajero': typeof AppCajeroRouteWithChildren
   '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/cajero/buscar': typeof AppCajeroBuscarRoute
+  '/app/cajero/canje': typeof AppCajeroCanjeRoute
+  '/app/cajero/escanear': typeof AppCajeroEscanearRoute
   '/app/cliente/inicio': typeof AppClienteInicioRoute
   '/app/cliente/perfil': typeof AppClientePerfilRoute
   '/app/cliente/qr': typeof AppClienteQrRoute
@@ -102,7 +134,11 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/registro': typeof RegistroRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/app/cajero': typeof AppCajeroRouteWithChildren
   '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/cajero/buscar': typeof AppCajeroBuscarRoute
+  '/app/cajero/canje': typeof AppCajeroCanjeRoute
+  '/app/cajero/escanear': typeof AppCajeroEscanearRoute
   '/app/cliente/inicio': typeof AppClienteInicioRoute
   '/app/cliente/perfil': typeof AppClientePerfilRoute
   '/app/cliente/qr': typeof AppClienteQrRoute
@@ -116,7 +152,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/registro'
     | '/reset-password'
+    | '/app/cajero'
     | '/app/cliente'
+    | '/app/cajero/buscar'
+    | '/app/cajero/canje'
+    | '/app/cajero/escanear'
     | '/app/cliente/inicio'
     | '/app/cliente/perfil'
     | '/app/cliente/qr'
@@ -128,7 +168,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/registro'
     | '/reset-password'
+    | '/app/cajero'
     | '/app/cliente'
+    | '/app/cajero/buscar'
+    | '/app/cajero/canje'
+    | '/app/cajero/escanear'
     | '/app/cliente/inicio'
     | '/app/cliente/perfil'
     | '/app/cliente/qr'
@@ -140,7 +184,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/registro'
     | '/reset-password'
+    | '/app/cajero'
     | '/app/cliente'
+    | '/app/cajero/buscar'
+    | '/app/cajero/canje'
+    | '/app/cajero/escanear'
     | '/app/cliente/inicio'
     | '/app/cliente/perfil'
     | '/app/cliente/qr'
@@ -153,6 +201,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RegistroRoute: typeof RegistroRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  AppCajeroRoute: typeof AppCajeroRouteWithChildren
   AppClienteRoute: typeof AppClienteRouteWithChildren
 }
 
@@ -200,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/cajero': {
+      id: '/app/cajero'
+      path: '/app/cajero'
+      fullPath: '/app/cajero'
+      preLoaderRoute: typeof AppCajeroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app/cliente/recompensas': {
       id: '/app/cliente/recompensas'
       path: '/recompensas'
@@ -228,8 +284,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppClienteInicioRouteImport
       parentRoute: typeof AppClienteRoute
     }
+    '/app/cajero/escanear': {
+      id: '/app/cajero/escanear'
+      path: '/escanear'
+      fullPath: '/app/cajero/escanear'
+      preLoaderRoute: typeof AppCajeroEscanearRouteImport
+      parentRoute: typeof AppCajeroRoute
+    }
+    '/app/cajero/canje': {
+      id: '/app/cajero/canje'
+      path: '/canje'
+      fullPath: '/app/cajero/canje'
+      preLoaderRoute: typeof AppCajeroCanjeRouteImport
+      parentRoute: typeof AppCajeroRoute
+    }
+    '/app/cajero/buscar': {
+      id: '/app/cajero/buscar'
+      path: '/buscar'
+      fullPath: '/app/cajero/buscar'
+      preLoaderRoute: typeof AppCajeroBuscarRouteImport
+      parentRoute: typeof AppCajeroRoute
+    }
   }
 }
+
+interface AppCajeroRouteChildren {
+  AppCajeroBuscarRoute: typeof AppCajeroBuscarRoute
+  AppCajeroCanjeRoute: typeof AppCajeroCanjeRoute
+  AppCajeroEscanearRoute: typeof AppCajeroEscanearRoute
+}
+
+const AppCajeroRouteChildren: AppCajeroRouteChildren = {
+  AppCajeroBuscarRoute: AppCajeroBuscarRoute,
+  AppCajeroCanjeRoute: AppCajeroCanjeRoute,
+  AppCajeroEscanearRoute: AppCajeroEscanearRoute,
+}
+
+const AppCajeroRouteWithChildren = AppCajeroRoute._addFileChildren(
+  AppCajeroRouteChildren,
+)
 
 interface AppClienteRouteChildren {
   AppClienteInicioRoute: typeof AppClienteInicioRoute
@@ -255,8 +348,18 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegistroRoute: RegistroRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  AppCajeroRoute: AppCajeroRouteWithChildren,
   AppClienteRoute: AppClienteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

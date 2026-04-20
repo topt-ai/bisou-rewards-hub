@@ -60,8 +60,12 @@ function EscanearPage() {
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 240, height: 240 } },
         async (decoded) => {
-          await inst.stop();
-          await inst.clear();
+          await inst.stop().catch(() => {});
+          try {
+            inst.clear();
+          } catch {
+            /* ignore */
+          }
           scannerRef.current = null;
           setScanning(false);
           await lookup(decoded.trim());

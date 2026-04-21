@@ -13,6 +13,7 @@ export interface CustomerProfile {
   email: string;
   puntos: number;
   puntos_totales: number;
+  avatar_url?: string | null;
 }
 
 export function CustomerCard({
@@ -61,11 +62,29 @@ export function CustomerCard({
 
   return (
     <Card className="space-y-4 p-5">
-      <div>
-        <h3 className="font-display text-xl text-card-foreground">{customer.nombre}</h3>
-        <p className="text-xs text-muted-foreground">{customer.email}</p>
-        <div className="mt-3 inline-flex items-center rounded-full bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">
-          {customer.puntos} pts disponibles
+      <div className="flex items-start gap-3">
+        {customer.avatar_url ? (
+          <img
+            src={customer.avatar_url}
+            alt={customer.nombre}
+            className="h-14 w-14 shrink-0 rounded-full object-cover"
+          />
+        ) : (
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary font-display text-lg font-semibold text-primary-foreground">
+            {customer.nombre
+              .split(" ")
+              .filter(Boolean)
+              .slice(0, 2)
+              .map((p) => p[0]?.toUpperCase() ?? "")
+              .join("")}
+          </div>
+        )}
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate font-display text-xl text-card-foreground">{customer.nombre}</h3>
+          <p className="truncate text-xs text-muted-foreground">{customer.email}</p>
+          <div className="mt-3 inline-flex items-center rounded-full bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">
+            {customer.puntos} pts disponibles
+          </div>
         </div>
       </div>
 

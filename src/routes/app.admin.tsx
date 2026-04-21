@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { LayoutDashboard, Users, Gift, Settings } from "lucide-react";
+import { LayoutDashboard, Users, Gift, Settings, User } from "lucide-react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
@@ -30,6 +30,7 @@ function AdminLayout() {
             { to: "/app/admin/clientes", label: "Clientes", icon: Users },
             { to: "/app/admin/recompensas", label: "Recompensas", icon: Gift },
             { to: "/app/admin/ajustes", label: "Ajustes", icon: Settings },
+            { to: "/app/admin/perfil", label: "Perfil", icon: User },
           ]}
         />
       </div>

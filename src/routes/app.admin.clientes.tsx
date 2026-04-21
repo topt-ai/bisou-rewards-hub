@@ -37,6 +37,7 @@ interface ProfileRow {
   puntos_totales: number;
   role: string;
   activo: boolean;
+  avatar_url: string | null;
   created_at: string;
 }
 
@@ -61,7 +62,7 @@ function ClientesAdminPage() {
     setRows(null);
     let query = supabase
       .from("profiles")
-      .select("id, nombre, email, puntos, puntos_totales, role, activo, created_at")
+      .select("id, nombre, email, puntos, puntos_totales, role, activo, avatar_url, created_at")
       .eq("role", "cliente")
       .order("created_at", { ascending: false })
       .limit(100);
@@ -174,8 +175,24 @@ function ClientesAdminPage() {
               <li
                 key={r.id}
                 onClick={() => openDetail(r)}
-                className="grid cursor-pointer grid-cols-[1fr_auto] gap-2 px-4 py-3 hover:bg-accent/5"
+                className="grid cursor-pointer grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 hover:bg-accent/5"
               >
+                {r.avatar_url ? (
+                  <img
+                    src={r.avatar_url}
+                    alt={r.nombre}
+                    className="h-9 w-9 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                    {r.nombre
+                      .split(" ")
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((p) => p[0]?.toUpperCase() ?? "")
+                      .join("")}
+                  </div>
+                )}
                 <div className="min-w-0">
                   <p className="truncate font-medium">{r.nombre}</p>
                   <p className="truncate text-[11px] text-muted-foreground">{r.email}</p>

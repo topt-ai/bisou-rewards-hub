@@ -86,35 +86,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password: data.password,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
-        data: { nombre: data.nombre },
+        data: {
+          nombre: data.nombre,
+          telefono: data.telefono ?? "",
+          fecha_nacimiento: data.fecha_nacimiento ?? "",
+          cedula: data.cedula ?? "",
+        },
       },
     });
     if (error) throw error;
     const userId = authData.user?.id;
     if (!userId) throw new Error("No se pudo crear la cuenta");
 
-    // Update profile with extra fields and grant +10 welcome bonus.
-    // Trigger handle_new_user already created the profile row.
-    // Wait briefly for trigger then update.
-    await new Promise((r) => setTimeout(r, 400));
-
-    const updates: Partial<Profile> = {
-      telefono: data.telefono || null,
-      fecha_nacimiento: data.fecha_nacimiento || null,
-      cedula: data.cedula || null,
-      puntos: 10,
-      puntos_totales: 10,
-    };
-    const { error: upErr } = await supabase.from("profiles").update(updates).eq("id", userId);
-    if (upErr) console.error("profile update on signup", upErr);
-
-    const { error: txErr } = await supabase.from("transactions").insert({
-      user_id: userId,
-      tipo: "bienvenida",
-      puntos: 10,
-      descripcion: "¡Bienvenido/a a BISOU!",
-    });
-    if (txErr) console.error("welcome tx insert", txErr);
+    // The handle_new_user trigger creates the profile row with all fields
+    // and inserts the welcome transaction atomically. Just refresh into context.
+    await loadProfile(userId);
   };
 
   const signOut = async () => {

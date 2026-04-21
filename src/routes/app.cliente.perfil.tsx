@@ -9,20 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LogOut, Pencil, Check } from "lucide-react";
 import { toast } from "sonner";
+import { AvatarUploader } from "@/components/AvatarUploader";
 
 export const Route = createFileRoute("/app/cliente/perfil")({
   head: () => ({ meta: [{ title: "Mi perfil — BISOU" }] }),
   component: PerfilPage,
 });
-
-function initials(nombre: string) {
-  return nombre
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((p) => p[0]?.toUpperCase() ?? "")
-    .join("");
-}
 
 function PerfilPage() {
   const { profile, signOut, refreshProfile, loading } = useAuth();
@@ -70,9 +62,12 @@ function PerfilPage() {
   return (
     <div className="space-y-5 p-5">
       <header className="flex flex-col items-center pt-4 text-center">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary font-display text-3xl font-semibold text-primary-foreground shadow-lg">
-          {initials(profile.nombre)}
-        </div>
+        <AvatarUploader
+          userId={profile.id}
+          nombre={profile.nombre}
+          avatarUrl={profile.avatar_url}
+          onUpdated={() => refreshProfile()}
+        />
         <h1 className="mt-4 font-display text-2xl text-foreground">{profile.nombre}</h1>
         <p className="text-sm text-muted-foreground">{profile.email}</p>
       </header>

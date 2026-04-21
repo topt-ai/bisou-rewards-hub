@@ -40,7 +40,7 @@ function EscanearPage() {
   const lookup = async (uuid: string) => {
     const { data, error } = await supabase
       .from("profiles")
-      .select("id, nombre, email, puntos, puntos_totales")
+      .select("id, nombre, email, puntos, puntos_totales, avatar_url")
       .eq("id", uuid)
       .maybeSingle();
     if (error || !data) {

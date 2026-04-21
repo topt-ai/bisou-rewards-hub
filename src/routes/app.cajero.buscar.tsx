@@ -31,7 +31,7 @@ function BuscarPage() {
       const like = `%${term}%`;
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, nombre, email, puntos, puntos_totales, cedula, role")
+        .select("id, nombre, email, puntos, puntos_totales, cedula, role, avatar_url")
         .eq("role", "cliente")
         .or(`nombre.ilike.${like},email.ilike.${like},cedula.ilike.${like}`)
         .limit(20);

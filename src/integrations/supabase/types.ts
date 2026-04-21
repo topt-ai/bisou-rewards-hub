@@ -66,6 +66,7 @@ export type Database = {
       profiles: {
         Row: {
           activo: boolean
+          avatar_url: string | null
           cedula: string | null
           created_at: string
           email: string
@@ -80,6 +81,7 @@ export type Database = {
         }
         Insert: {
           activo?: boolean
+          avatar_url?: string | null
           cedula?: string | null
           created_at?: string
           email: string
@@ -94,6 +96,7 @@ export type Database = {
         }
         Update: {
           activo?: boolean
+          avatar_url?: string | null
           cedula?: string | null
           created_at?: string
           email?: string

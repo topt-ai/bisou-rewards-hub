@@ -20,6 +20,7 @@ const tabs = [
   { to: "/app/cajero/escanear", label: "Escanear" },
   { to: "/app/cajero/buscar", label: "Buscar" },
   { to: "/app/cajero/canje", label: "Canje" },
+  { to: "/app/cajero/perfil", label: "Perfil" },
 ];
 
 function CajeroLayout() {

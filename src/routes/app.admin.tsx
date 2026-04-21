@@ -1,9 +1,11 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { LayoutDashboard, Users, Gift, Settings, User } from "lucide-react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
 import { checkAuthAndRole } from "@/lib/route-guards";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Route = createFileRoute("/app/admin")({
   beforeLoad: async ({ location }) => {
@@ -17,6 +19,22 @@ export const Route = createFileRoute("/app/admin")({
 });
 
 function AdminLayout() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    void (async () => {
+      const res = await checkAuthAndRole("admin");
+      if (!res.ok) {
+        navigate(res.redirectTo, { replace: true });
+        return;
+      }
+      if (location.pathname === "/app/admin" || location.pathname === "/app/admin/") {
+        navigate("/app/admin/dashboard", { replace: true });
+      }
+    })();
+  }, [location.pathname, navigate]);
+
   return (
     <PhoneFrame className="md:max-w-[680px]">
       <div className="flex min-h-screen flex-col">

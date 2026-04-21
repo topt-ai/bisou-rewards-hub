@@ -1,8 +1,10 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Home, QrCode, Gift, User } from "lucide-react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { checkAuthAndRole } from "@/lib/route-guards";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const Route = createFileRoute("/app/cliente")({
   beforeLoad: async ({ location }) => {
@@ -17,6 +19,22 @@ export const Route = createFileRoute("/app/cliente")({
 });
 
 function ClienteLayout() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    void (async () => {
+      const res = await checkAuthAndRole("cliente");
+      if (!res.ok) {
+        navigate(res.redirectTo, { replace: true });
+        return;
+      }
+      if (location.pathname === "/app/cliente" || location.pathname === "/app/cliente/") {
+        navigate("/app/cliente/inicio", { replace: true });
+      }
+    })();
+  }, [location.pathname, navigate]);
+
   return (
     <PhoneFrame>
       <div className="flex min-h-screen flex-col">

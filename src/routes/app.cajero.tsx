@@ -1,9 +1,11 @@
 import { createFileRoute, Outlet, redirect, Link, useLocation } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { TopBar } from "@/components/TopBar";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { useAuth } from "@/lib/auth-context";
 import { checkAuthAndRole } from "@/lib/route-guards";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 export const Route = createFileRoute("/app/cajero")({
   beforeLoad: async ({ location }) => {
@@ -26,6 +28,21 @@ const tabs = [
 function CajeroLayout() {
   const { profile } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    void (async () => {
+      const res = await checkAuthAndRole("cajero");
+      if (!res.ok) {
+        navigate(res.redirectTo, { replace: true });
+        return;
+      }
+      if (location.pathname === "/app/cajero" || location.pathname === "/app/cajero/") {
+        navigate("/app/cajero/escanear", { replace: true });
+      }
+    })();
+  }, [location.pathname, navigate]);
+
   return (
     <PhoneFrame className="md:max-w-[640px]">
       <div className="flex min-h-screen flex-col">

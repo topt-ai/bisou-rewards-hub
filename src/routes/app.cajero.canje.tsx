@@ -1,20 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { QrScannerCard } from "@/components/QrScannerCard";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
-import { Search } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/app/cajero/canje")({
   head: () => ({ meta: [{ title: "Confirmar canje — BISOU" }] }),
@@ -26,6 +18,7 @@ interface Customer {
   nombre: string;
   email: string;
   puntos: number;
+  avatar_url: string | null;
 }
 
 interface Recompensa {
@@ -36,11 +29,10 @@ interface Recompensa {
 
 function CanjePage() {
   const { profile } = useAuth();
-  const [q, setQ] = useState("");
-  const [results, setResults] = useState<Customer[]>([]);
   const [selected, setSelected] = useState<Customer | null>(null);
   const [recompensas, setRecompensas] = useState<Recompensa[]>([]);
-  const [recompensaId, setRecompensaId] = useState<string>("");
+  const [selectedReward, setSelectedReward] = useState<Recompensa | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -52,26 +44,30 @@ function CanjePage() {
       .then(({ data }) => setRecompensas(data ?? []));
   }, []);
 
-  const search = async () => {
-    const term = q.trim();
-    if (term.length < 2) return;
-    const like = `%${term}%`;
-    const { data } = await supabase
+  const lookupByQr = async (uuid: string) => {
+    const { data, error } = await supabase
       .from("profiles")
-      .select("id, nombre, email, puntos")
-      .eq("role", "cliente")
-      .or(`nombre.ilike.${like},email.ilike.${like},cedula.ilike.${like}`)
-      .limit(10);
-    setResults((data ?? []) as Customer[]);
+      .select("id, nombre, email, puntos, avatar_url, role")
+      .eq("id", uuid)
+      .maybeSingle();
+    if (error || !data || data.role !== "cliente") {
+      toast.error("Cliente no encontrado");
+      return;
+    }
+    setSelected(data as Customer);
+    setSelectedReward(null);
   };
 
-  const confirmCanje = async () => {
-    if (!profile || !selected || !recompensaId) {
+  const recompensasDisponibles = useMemo(
+    () => recompensas.filter((r) => !!selected && selected.puntos >= r.puntos_requeridos),
+    [recompensas, selected],
+  );
+
+  const confirmCanje = async (reward: Recompensa) => {
+    if (!profile || !selected) {
       toast.error("Selecciona cliente y recompensa");
       return;
     }
-    const reward = recompensas.find((r) => r.id === recompensaId);
-    if (!reward) return;
     if (selected.puntos < reward.puntos_requeridos) {
       toast.error(`${selected.nombre.split(" ")[0]} no tiene puntos suficientes`);
       return;
@@ -104,9 +100,8 @@ function CanjePage() {
 
       toast.success(`✓ Canje completado: ${reward.nombre} para ${selected.nombre.split(" ")[0]}`);
       setSelected(null);
-      setRecompensaId("");
-      setQ("");
-      setResults([]);
+      setSelectedReward(null);
+      setConfirmOpen(false);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Error al confirmar canje";
       toast.error(msg);
@@ -117,96 +112,100 @@ function CanjePage() {
 
   return (
     <div className="space-y-4 p-5">
-      <Card className="space-y-3 p-5">
-        <div>
-          <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-            1. Buscar cliente
-          </Label>
-          {!selected ? (
-            <>
-              <div className="mt-2 flex gap-2">
-                <Input
-                  placeholder="Nombre, email o cédula"
-                  value={q}
-                  onChange={(e) => setQ(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && search()}
-                  className="h-11"
+      {!selected ? (
+        <QrScannerCard
+          onDecoded={lookupByQr}
+          title="Escanear para canjear"
+          description="Escanea el QR del cliente para continuar con el canje."
+        />
+      ) : (
+        <Card className="space-y-4 p-5">
+          <div className="flex items-start justify-between gap-3 rounded-lg bg-primary/5 p-3">
+            <div className="flex min-w-0 items-center gap-3">
+              {selected.avatar_url ? (
+                <img
+                  src={selected.avatar_url}
+                  alt={selected.nombre}
+                  className="h-12 w-12 shrink-0 rounded-full object-cover"
                 />
-                <Button onClick={search} className="h-11 rounded-full px-5">
-                  <Search className="h-4 w-4" />
-                </Button>
-              </div>
-              {results.length > 0 && (
-                <ul className="mt-2 divide-y divide-border overflow-hidden rounded-lg border border-border">
-                  {results.map((r) => (
-                    <li
-                      key={r.id}
-                      onClick={() => {
-                        setSelected(r);
-                        setResults([]);
-                      }}
-                      className="flex cursor-pointer items-center justify-between px-3 py-2 hover:bg-accent/5"
-                    >
-                      <div>
-                        <p className="text-sm font-medium">{r.nombre}</p>
-                        <p className="text-xs text-muted-foreground">{r.email}</p>
-                      </div>
-                      <span className="text-xs font-medium text-primary">{r.puntos} pts</span>
-                    </li>
-                  ))}
-                </ul>
+              ) : (
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary font-display text-sm font-semibold text-primary-foreground">
+                  {selected.nombre
+                    .split(" ")
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .map((p) => p[0]?.toUpperCase() ?? "")
+                    .join("")}
+                </div>
               )}
-            </>
-          ) : (
-            <div className="mt-2 flex items-center justify-between rounded-lg bg-primary/5 p-3">
-              <div>
-                <p className="font-medium">{selected.nombre}</p>
-                <p className="text-xs text-muted-foreground">{selected.puntos} pts disponibles</p>
+              <div className="min-w-0">
+                <p className="truncate font-medium">{selected.nombre}</p>
+                <p className="truncate text-xs text-muted-foreground">{selected.email}</p>
+                <p className="text-xs font-medium text-primary">{selected.puntos} pts disponibles</p>
               </div>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => {
-                  setSelected(null);
-                  setRecompensaId("");
-                }}
-              >
-                Cambiar
-              </Button>
             </div>
-          )}
-        </div>
-
-        {selected && (
-          <div>
-            <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-              2. Recompensa
-            </Label>
-            <Select value={recompensaId} onValueChange={setRecompensaId}>
-              <SelectTrigger className="mt-2 h-11">
-                <SelectValue placeholder="Selecciona una recompensa" />
-              </SelectTrigger>
-              <SelectContent>
-                {recompensas.map((r) => (
-                  <SelectItem key={r.id} value={r.id}>
-                    {r.nombre} — {r.puntos_requeridos} pts
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Button size="sm" variant="ghost" onClick={() => setSelected(null)}>
+              Escanear otro
+            </Button>
           </div>
-        )}
 
-        {selected && recompensaId && (
-          <Button
-            onClick={confirmCanje}
-            disabled={loading}
-            className="h-12 w-full rounded-full"
-          >
-            {loading ? "Confirmando..." : "Confirmar canje"}
-          </Button>
-        )}
-      </Card>
+          <div className="space-y-2">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              Recompensas disponibles
+            </p>
+            {recompensasDisponibles.length === 0 ? (
+              <p className="rounded-lg border border-border p-3 text-sm text-muted-foreground">
+                Este cliente no tiene puntos suficientes para recompensas activas.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {recompensasDisponibles.map((r) => (
+                  <Button
+                    key={r.id}
+                    variant="outline"
+                    className="h-11 w-full justify-between"
+                    onClick={() => {
+                      setSelectedReward(r);
+                      setConfirmOpen(true);
+                    }}
+                  >
+                    <span>{r.nombre}</span>
+                    <span>{r.puntos_requeridos} pts</span>
+                  </Button>
+                ))}
+              </div>
+            )}
+          </div>
+        </Card>
+      )}
+
+      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <DialogContent className="rounded-2xl">
+          <DialogHeader>
+            <DialogTitle className="font-display text-xl">Confirmar canje</DialogTitle>
+            <DialogDescription>
+              ¿Canjear <span className="font-medium text-foreground">{selectedReward?.nombre}</span>{" "}
+              para <span className="font-medium text-foreground">{selected?.nombre}</span>? Se
+              descontarán{" "}
+              <span className="font-medium text-foreground">
+                {selectedReward?.puntos_requeridos ?? 0} puntos
+              </span>
+              .
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={() => setConfirmOpen(false)}>
+              Cancelar
+            </Button>
+            <Button
+              disabled={loading || !selectedReward}
+              onClick={() => selectedReward && confirmCanje(selectedReward)}
+            >
+              {loading ? "Confirmando..." : "Confirmar canje"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

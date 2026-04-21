@@ -35,25 +35,35 @@ function isBirthday(fecha: string | null): boolean {
 
 function InicioPage() {
   const { profile, loading: authLoading } = useAuth();
+  const [liveProfile, setLiveProfile] = useState(profile);
   const [txs, setTxs] = useState<Tx[] | null>(null);
   const [nextReward, setNextReward] = useState<NextReward | null>(null);
 
   useEffect(() => {
-    if (!profile) return;
+    setLiveProfile(profile);
+  }, [profile]);
+
+  const fetchTransactions = async (userId: string) => {
+    const { data } = await supabase
+      .from("transactions")
+      .select("id, tipo, puntos, descripcion, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(5);
+    setTxs(data ?? []);
+  };
+
+  useEffect(() => {
+    if (!liveProfile) return;
     let active = true;
     (async () => {
       const [txRes, rewRes] = await Promise.all([
-        supabase
-          .from("transactions")
-          .select("id, tipo, puntos, descripcion, created_at")
-          .eq("user_id", profile.id)
-          .order("created_at", { ascending: false })
-          .limit(5),
+        supabase.from("transactions").select("id, tipo, puntos, descripcion, created_at").eq("user_id", liveProfile.id).order("created_at", { ascending: false }).limit(5),
         supabase
           .from("recompensas")
           .select("nombre, puntos_requeridos")
           .eq("activa", true)
-          .gt("puntos_requeridos", profile.puntos)
+          .gt("puntos_requeridos", liveProfile.puntos)
           .order("puntos_requeridos", { ascending: true })
           .limit(1),
       ]);
@@ -64,9 +74,46 @@ function InicioPage() {
     return () => {
       active = false;
     };
-  }, [profile]);
+  }, [liveProfile?.id, liveProfile?.puntos]);
 
-  if (authLoading || !profile) {
+  useEffect(() => {
+    if (!liveProfile?.id) return;
+    const channel = supabase
+      .channel(`puntos-updates-${liveProfile.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "profiles",
+          filter: `id=eq.${liveProfile.id}`,
+        },
+        (payload) => {
+          if (payload.new) {
+            setLiveProfile(payload.new as typeof liveProfile);
+          }
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "transactions",
+          filter: `user_id=eq.${liveProfile.id}`,
+        },
+        () => {
+          void fetchTransactions(liveProfile.id);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [liveProfile?.id]);
+
+  if (authLoading || !liveProfile) {
     return (
       <div className="space-y-4 p-5">
         <Skeleton className="h-6 w-48" />
@@ -76,11 +123,11 @@ function InicioPage() {
     );
   }
 
-  const firstName = profile.nombre.split(" ")[0];
+  const firstName = liveProfile.nombre.split(" ")[0];
   const progress = nextReward
-    ? Math.min(100, Math.round((profile.puntos / nextReward.puntos_requeridos) * 100))
+    ? Math.min(100, Math.round((liveProfile.puntos / nextReward.puntos_requeridos) * 100))
     : 100;
-  const remaining = nextReward ? Math.max(0, nextReward.puntos_requeridos - profile.puntos) : 0;
+  const remaining = nextReward ? Math.max(0, nextReward.puntos_requeridos - liveProfile.puntos) : 0;
 
   return (
     <div className="space-y-5 p-5">
@@ -89,7 +136,7 @@ function InicioPage() {
         <p className="mt-1 text-sm text-muted-foreground">Bienvenido a tu BISOU</p>
       </header>
 
-      {isBirthday(profile.fecha_nacimiento) && (
+      {isBirthday(liveProfile.fecha_nacimiento) && (
         <div className="flex items-center gap-3 rounded-xl bg-primary px-4 py-3 text-primary-foreground shadow">
           <Cake className="h-5 w-5 shrink-0" />
           <p className="text-sm leading-snug">
@@ -104,7 +151,7 @@ function InicioPage() {
           Tus puntos
         </p>
         <div className="mt-2 flex items-baseline gap-2">
-          <span className="font-display text-6xl font-semibold leading-none">{profile.puntos}</span>
+          <span className="font-display text-6xl font-semibold leading-none">{liveProfile.puntos}</span>
           <span className="text-sm font-light text-primary-foreground/80">pts disponibles</span>
         </div>
         {nextReward ? (
@@ -126,12 +173,12 @@ function InicioPage() {
         <div className="mt-5 grid grid-cols-2 gap-3 border-t border-primary-foreground/15 pt-4 text-xs">
           <div>
             <p className="text-primary-foreground/60">Puntos totales</p>
-            <p className="mt-0.5 font-display text-lg">{profile.puntos_totales}</p>
+            <p className="mt-0.5 font-display text-lg">{liveProfile.puntos_totales}</p>
           </div>
           <div className="text-right">
             <p className="text-primary-foreground/60">Miembro desde</p>
             <p className="mt-0.5 font-display text-lg">
-              {new Date(profile.created_at).toLocaleDateString("es-NI", {
+              {new Date(liveProfile.created_at).toLocaleDateString("es-NI", {
                 month: "short",
                 year: "numeric",
               })}

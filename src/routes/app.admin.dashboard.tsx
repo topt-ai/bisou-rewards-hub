@@ -32,11 +32,12 @@ function DashboardPage() {
   const [names, setNames] = useState<Record<string, string>>({});
 
   useEffect(() => {
+    let mounted = true;
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
     const iso = todayStart.toISOString();
 
-    (async () => {
+    const fetchDashboard = async () => {
       const [c, ph, ch, pt, recent] = await Promise.all([
         supabase
           .from("profiles")
@@ -62,6 +63,7 @@ function DashboardPage() {
       const sum = (rows: { puntos: number }[] | null) =>
         (rows ?? []).reduce((a, r) => a + r.puntos, 0);
 
+      if (!mounted) return;
       setStats({
         clientes: c.count ?? 0,
         puntosHoy: sum(ph.data),
@@ -85,7 +87,33 @@ function DashboardPage() {
         (profs ?? []).forEach((p) => (map[p.id] = p.nombre));
         setNames(map);
       }
-    })();
+    };
+
+    void fetchDashboard();
+
+    const channel = supabase
+      .channel("admin-dashboard-live")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "transactions" },
+        () => void fetchDashboard(),
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "profiles" },
+        () => void fetchDashboard(),
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "canjes" },
+        () => void fetchDashboard(),
+      )
+      .subscribe();
+
+    return () => {
+      mounted = false;
+      void supabase.removeChannel(channel);
+    };
   }, []);
 
   return (

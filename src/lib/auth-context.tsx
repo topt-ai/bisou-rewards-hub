@@ -48,26 +48,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    // Set up listener BEFORE getSession (per Lovable auth pattern)
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       if (newSession?.user) {
-        // defer to avoid recursion
         setTimeout(() => {
-          void loadProfile(newSession.user.id);
+          void loadProfile(newSession.user.id).finally(() => {
+            if (event === "INITIAL_SESSION") setLoading(false);
+          });
         }, 0);
       } else {
         setProfile(null);
+        if (event === "INITIAL_SESSION") setLoading(false);
       }
     });
 
+    // Safety fallback in case INITIAL_SESSION is delayed.
     supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
+      setSession((prev) => prev ?? s);
       if (s?.user) {
         void loadProfile(s.user.id).finally(() => setLoading(false));
-      } else {
-        setLoading(false);
+        return;
       }
+      setLoading(false);
     });
 
     return () => {

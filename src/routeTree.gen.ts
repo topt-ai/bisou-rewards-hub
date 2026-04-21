@@ -9,38 +9,293 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RegistroRouteImport } from './routes/registro'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppClienteRouteImport } from './routes/app.cliente'
+import { Route as AppCajeroRouteImport } from './routes/app.cajero'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppClienteRecompensasRouteImport } from './routes/app.cliente.recompensas'
+import { Route as AppClienteQrRouteImport } from './routes/app.cliente.qr'
+import { Route as AppClientePerfilRouteImport } from './routes/app.cliente.perfil'
+import { Route as AppClienteInicioRouteImport } from './routes/app.cliente.inicio'
+import { Route as AppCajeroEscanearRouteImport } from './routes/app.cajero.escanear'
+import { Route as AppCajeroCanjeRouteImport } from './routes/app.cajero.canje'
+import { Route as AppCajeroBuscarRouteImport } from './routes/app.cajero.buscar'
+import { Route as AppAdminRecompensasRouteImport } from './routes/app.admin.recompensas'
+import { Route as AppAdminDashboardRouteImport } from './routes/app.admin.dashboard'
+import { Route as AppAdminClientesRouteImport } from './routes/app.admin.clientes'
+import { Route as AppAdminAjustesRouteImport } from './routes/app.admin.ajustes'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegistroRoute = RegistroRouteImport.update({
+  id: '/registro',
+  path: '/registro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppClienteRoute = AppClienteRouteImport.update({
+  id: '/app/cliente',
+  path: '/app/cliente',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppCajeroRoute = AppCajeroRouteImport.update({
+  id: '/app/cajero',
+  path: '/app/cajero',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/app/admin',
+  path: '/app/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppClienteRecompensasRoute = AppClienteRecompensasRouteImport.update({
+  id: '/recompensas',
+  path: '/recompensas',
+  getParentRoute: () => AppClienteRoute,
+} as any)
+const AppClienteQrRoute = AppClienteQrRouteImport.update({
+  id: '/qr',
+  path: '/qr',
+  getParentRoute: () => AppClienteRoute,
+} as any)
+const AppClientePerfilRoute = AppClientePerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AppClienteRoute,
+} as any)
+const AppClienteInicioRoute = AppClienteInicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
+  getParentRoute: () => AppClienteRoute,
+} as any)
+const AppCajeroEscanearRoute = AppCajeroEscanearRouteImport.update({
+  id: '/escanear',
+  path: '/escanear',
+  getParentRoute: () => AppCajeroRoute,
+} as any)
+const AppCajeroCanjeRoute = AppCajeroCanjeRouteImport.update({
+  id: '/canje',
+  path: '/canje',
+  getParentRoute: () => AppCajeroRoute,
+} as any)
+const AppCajeroBuscarRoute = AppCajeroBuscarRouteImport.update({
+  id: '/buscar',
+  path: '/buscar',
+  getParentRoute: () => AppCajeroRoute,
+} as any)
+const AppAdminRecompensasRoute = AppAdminRecompensasRouteImport.update({
+  id: '/recompensas',
+  path: '/recompensas',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminDashboardRoute = AppAdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminClientesRoute = AppAdminClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminAjustesRoute = AppAdminAjustesRouteImport.update({
+  id: '/ajustes',
+  path: '/ajustes',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/registro': typeof RegistroRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
+  '/app/cajero': typeof AppCajeroRouteWithChildren
+  '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/admin/ajustes': typeof AppAdminAjustesRoute
+  '/app/admin/clientes': typeof AppAdminClientesRoute
+  '/app/admin/dashboard': typeof AppAdminDashboardRoute
+  '/app/admin/recompensas': typeof AppAdminRecompensasRoute
+  '/app/cajero/buscar': typeof AppCajeroBuscarRoute
+  '/app/cajero/canje': typeof AppCajeroCanjeRoute
+  '/app/cajero/escanear': typeof AppCajeroEscanearRoute
+  '/app/cliente/inicio': typeof AppClienteInicioRoute
+  '/app/cliente/perfil': typeof AppClientePerfilRoute
+  '/app/cliente/qr': typeof AppClienteQrRoute
+  '/app/cliente/recompensas': typeof AppClienteRecompensasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/registro': typeof RegistroRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
+  '/app/cajero': typeof AppCajeroRouteWithChildren
+  '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/admin/ajustes': typeof AppAdminAjustesRoute
+  '/app/admin/clientes': typeof AppAdminClientesRoute
+  '/app/admin/dashboard': typeof AppAdminDashboardRoute
+  '/app/admin/recompensas': typeof AppAdminRecompensasRoute
+  '/app/cajero/buscar': typeof AppCajeroBuscarRoute
+  '/app/cajero/canje': typeof AppCajeroCanjeRoute
+  '/app/cajero/escanear': typeof AppCajeroEscanearRoute
+  '/app/cliente/inicio': typeof AppClienteInicioRoute
+  '/app/cliente/perfil': typeof AppClientePerfilRoute
+  '/app/cliente/qr': typeof AppClienteQrRoute
+  '/app/cliente/recompensas': typeof AppClienteRecompensasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/registro': typeof RegistroRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
+  '/app/cajero': typeof AppCajeroRouteWithChildren
+  '/app/cliente': typeof AppClienteRouteWithChildren
+  '/app/admin/ajustes': typeof AppAdminAjustesRoute
+  '/app/admin/clientes': typeof AppAdminClientesRoute
+  '/app/admin/dashboard': typeof AppAdminDashboardRoute
+  '/app/admin/recompensas': typeof AppAdminRecompensasRoute
+  '/app/cajero/buscar': typeof AppCajeroBuscarRoute
+  '/app/cajero/canje': typeof AppCajeroCanjeRoute
+  '/app/cajero/escanear': typeof AppCajeroEscanearRoute
+  '/app/cliente/inicio': typeof AppClienteInicioRoute
+  '/app/cliente/perfil': typeof AppClientePerfilRoute
+  '/app/cliente/qr': typeof AppClienteQrRoute
+  '/app/cliente/recompensas': typeof AppClienteRecompensasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/registro'
+    | '/reset-password'
+    | '/app/admin'
+    | '/app/cajero'
+    | '/app/cliente'
+    | '/app/admin/ajustes'
+    | '/app/admin/clientes'
+    | '/app/admin/dashboard'
+    | '/app/admin/recompensas'
+    | '/app/cajero/buscar'
+    | '/app/cajero/canje'
+    | '/app/cajero/escanear'
+    | '/app/cliente/inicio'
+    | '/app/cliente/perfil'
+    | '/app/cliente/qr'
+    | '/app/cliente/recompensas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/registro'
+    | '/reset-password'
+    | '/app/admin'
+    | '/app/cajero'
+    | '/app/cliente'
+    | '/app/admin/ajustes'
+    | '/app/admin/clientes'
+    | '/app/admin/dashboard'
+    | '/app/admin/recompensas'
+    | '/app/cajero/buscar'
+    | '/app/cajero/canje'
+    | '/app/cajero/escanear'
+    | '/app/cliente/inicio'
+    | '/app/cliente/perfil'
+    | '/app/cliente/qr'
+    | '/app/cliente/recompensas'
+  id:
+    | '__root__'
+    | '/'
+    | '/forgot-password'
+    | '/login'
+    | '/registro'
+    | '/reset-password'
+    | '/app/admin'
+    | '/app/cajero'
+    | '/app/cliente'
+    | '/app/admin/ajustes'
+    | '/app/admin/clientes'
+    | '/app/admin/dashboard'
+    | '/app/admin/recompensas'
+    | '/app/cajero/buscar'
+    | '/app/cajero/canje'
+    | '/app/cajero/escanear'
+    | '/app/cliente/inicio'
+    | '/app/cliente/perfil'
+    | '/app/cliente/qr'
+    | '/app/cliente/recompensas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
+  RegistroRoute: typeof RegistroRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  AppAdminRoute: typeof AppAdminRouteWithChildren
+  AppCajeroRoute: typeof AppCajeroRouteWithChildren
+  AppClienteRoute: typeof AppClienteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/registro': {
+      id: '/registro'
+      path: '/registro'
+      fullPath: '/registro'
+      preLoaderRoute: typeof RegistroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +303,168 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/cliente': {
+      id: '/app/cliente'
+      path: '/app/cliente'
+      fullPath: '/app/cliente'
+      preLoaderRoute: typeof AppClienteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/cajero': {
+      id: '/app/cajero'
+      path: '/app/cajero'
+      fullPath: '/app/cajero'
+      preLoaderRoute: typeof AppCajeroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/app/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/cliente/recompensas': {
+      id: '/app/cliente/recompensas'
+      path: '/recompensas'
+      fullPath: '/app/cliente/recompensas'
+      preLoaderRoute: typeof AppClienteRecompensasRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
+    '/app/cliente/qr': {
+      id: '/app/cliente/qr'
+      path: '/qr'
+      fullPath: '/app/cliente/qr'
+      preLoaderRoute: typeof AppClienteQrRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
+    '/app/cliente/perfil': {
+      id: '/app/cliente/perfil'
+      path: '/perfil'
+      fullPath: '/app/cliente/perfil'
+      preLoaderRoute: typeof AppClientePerfilRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
+    '/app/cliente/inicio': {
+      id: '/app/cliente/inicio'
+      path: '/inicio'
+      fullPath: '/app/cliente/inicio'
+      preLoaderRoute: typeof AppClienteInicioRouteImport
+      parentRoute: typeof AppClienteRoute
+    }
+    '/app/cajero/escanear': {
+      id: '/app/cajero/escanear'
+      path: '/escanear'
+      fullPath: '/app/cajero/escanear'
+      preLoaderRoute: typeof AppCajeroEscanearRouteImport
+      parentRoute: typeof AppCajeroRoute
+    }
+    '/app/cajero/canje': {
+      id: '/app/cajero/canje'
+      path: '/canje'
+      fullPath: '/app/cajero/canje'
+      preLoaderRoute: typeof AppCajeroCanjeRouteImport
+      parentRoute: typeof AppCajeroRoute
+    }
+    '/app/cajero/buscar': {
+      id: '/app/cajero/buscar'
+      path: '/buscar'
+      fullPath: '/app/cajero/buscar'
+      preLoaderRoute: typeof AppCajeroBuscarRouteImport
+      parentRoute: typeof AppCajeroRoute
+    }
+    '/app/admin/recompensas': {
+      id: '/app/admin/recompensas'
+      path: '/recompensas'
+      fullPath: '/app/admin/recompensas'
+      preLoaderRoute: typeof AppAdminRecompensasRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/dashboard': {
+      id: '/app/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/admin/dashboard'
+      preLoaderRoute: typeof AppAdminDashboardRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/clientes': {
+      id: '/app/admin/clientes'
+      path: '/clientes'
+      fullPath: '/app/admin/clientes'
+      preLoaderRoute: typeof AppAdminClientesRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/ajustes': {
+      id: '/app/admin/ajustes'
+      path: '/ajustes'
+      fullPath: '/app/admin/ajustes'
+      preLoaderRoute: typeof AppAdminAjustesRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
   }
 }
 
+interface AppAdminRouteChildren {
+  AppAdminAjustesRoute: typeof AppAdminAjustesRoute
+  AppAdminClientesRoute: typeof AppAdminClientesRoute
+  AppAdminDashboardRoute: typeof AppAdminDashboardRoute
+  AppAdminRecompensasRoute: typeof AppAdminRecompensasRoute
+}
+
+const AppAdminRouteChildren: AppAdminRouteChildren = {
+  AppAdminAjustesRoute: AppAdminAjustesRoute,
+  AppAdminClientesRoute: AppAdminClientesRoute,
+  AppAdminDashboardRoute: AppAdminDashboardRoute,
+  AppAdminRecompensasRoute: AppAdminRecompensasRoute,
+}
+
+const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
+  AppAdminRouteChildren,
+)
+
+interface AppCajeroRouteChildren {
+  AppCajeroBuscarRoute: typeof AppCajeroBuscarRoute
+  AppCajeroCanjeRoute: typeof AppCajeroCanjeRoute
+  AppCajeroEscanearRoute: typeof AppCajeroEscanearRoute
+}
+
+const AppCajeroRouteChildren: AppCajeroRouteChildren = {
+  AppCajeroBuscarRoute: AppCajeroBuscarRoute,
+  AppCajeroCanjeRoute: AppCajeroCanjeRoute,
+  AppCajeroEscanearRoute: AppCajeroEscanearRoute,
+}
+
+const AppCajeroRouteWithChildren = AppCajeroRoute._addFileChildren(
+  AppCajeroRouteChildren,
+)
+
+interface AppClienteRouteChildren {
+  AppClienteInicioRoute: typeof AppClienteInicioRoute
+  AppClientePerfilRoute: typeof AppClientePerfilRoute
+  AppClienteQrRoute: typeof AppClienteQrRoute
+  AppClienteRecompensasRoute: typeof AppClienteRecompensasRoute
+}
+
+const AppClienteRouteChildren: AppClienteRouteChildren = {
+  AppClienteInicioRoute: AppClienteInicioRoute,
+  AppClientePerfilRoute: AppClientePerfilRoute,
+  AppClienteQrRoute: AppClienteQrRoute,
+  AppClienteRecompensasRoute: AppClienteRecompensasRoute,
+}
+
+const AppClienteRouteWithChildren = AppClienteRoute._addFileChildren(
+  AppClienteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
+  RegistroRoute: RegistroRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  AppAdminRoute: AppAdminRouteWithChildren,
+  AppCajeroRoute: AppCajeroRouteWithChildren,
+  AppClienteRoute: AppClienteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

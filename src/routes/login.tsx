@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth, roleHomePath } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
+import { GoogleSignInButton, OrSeparator } from "@/components/GoogleSignInButton";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -59,7 +60,12 @@ function LoginPage() {
           Inicia sesión para ver tus puntos
         </p>
 
-        <form onSubmit={onSubmit} className="mt-8 space-y-4">
+        <div className="mt-8 space-y-4">
+          <GoogleSignInButton />
+          <OrSeparator />
+        </div>
+
+        <form onSubmit={onSubmit} className="mt-4 space-y-4">
           <div className="space-y-1.5">
             <Label htmlFor="email">Correo electrónico</Label>
             <Input

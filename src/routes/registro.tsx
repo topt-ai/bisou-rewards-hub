@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth-context";
+import { GoogleSignInButton, OrSeparator } from "@/components/GoogleSignInButton";
 
 export const Route = createFileRoute("/registro")({
   head: () => ({
@@ -80,7 +81,12 @@ function RegistroPage() {
           Únete y recibe 10 puntos de regalo
         </p>
 
-        <form onSubmit={onSubmit} className="mt-6 space-y-4">
+        <div className="mt-6 space-y-4">
+          <GoogleSignInButton />
+          <OrSeparator />
+        </div>
+
+        <form onSubmit={onSubmit} className="mt-4 space-y-4">
           <Field label="Nombre completo *" htmlFor="nombre">
             <Input
               id="nombre"

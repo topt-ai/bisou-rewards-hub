@@ -44,6 +44,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loadProfile = useCallback(async (userId: string) => {
     const p = await fetchProfile(userId);
+    if (p && (!p.nombre || p.nombre.trim() === "")) {
+      const { data: userData } = await supabase.auth.getUser();
+      const meta = userData.user?.user_metadata as { full_name?: string; name?: string } | undefined;
+      const fullName = meta?.full_name || meta?.name;
+      if (fullName) {
+        const { data: updated } = await supabase
+          .from("profiles")
+          .update({ nombre: fullName })
+          .eq("id", userId)
+          .select("*")
+          .maybeSingle();
+        setProfile(updated ?? p);
+        return;
+      }
+    }
     setProfile(p);
   }, []);
 

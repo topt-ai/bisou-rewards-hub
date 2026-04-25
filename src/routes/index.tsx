@@ -1,4 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { roleHomePath, useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -15,6 +17,29 @@ export const Route = createFileRoute("/")({
 });
 
 function SplashPage() {
+  const { session, role, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && session && role) {
+      navigate({ to: roleHomePath(role), replace: true });
+    }
+  }, [loading, session, role, navigate]);
+
+  if (loading || (session && role)) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-12">
+        <p className="text-[10px] font-medium uppercase tracking-[0.4em] text-foreground/60">
+          Est. Managua
+        </p>
+        <h1 className="mt-3 font-display text-7xl font-bold leading-none text-primary">BISOU</h1>
+        <div className="mt-8 h-1 w-16 overflow-hidden rounded-full bg-foreground/10">
+          <div className="h-full w-1/2 animate-pulse rounded-full bg-primary" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-between bg-background px-6 py-12">
       <div className="flex-1" />

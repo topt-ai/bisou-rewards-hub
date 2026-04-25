@@ -3,6 +3,7 @@ import { Camera } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { compressImage } from "@/lib/compress-image";
 
 function initials(nombre: string) {
   return nombre
@@ -50,17 +51,18 @@ export function AvatarUploader({
       toast.error("Selecciona una imagen");
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error("La imagen no debe pasar de 2 MB");
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("La imagen no debe pasar de 10 MB");
       return;
     }
 
     setUploading(true);
     try {
+      const compressed = await compressImage(file, 800, 0.85);
       const path = `${userId}/avatar.jpg`;
       const { error: upErr } = await supabase.storage
         .from("avatars")
-        .upload(path, file, { upsert: true, contentType: file.type });
+        .upload(path, compressed, { upsert: true, contentType: "image/jpeg" });
       if (upErr) throw upErr;
 
       const { data } = supabase.storage.from("avatars").getPublicUrl(path);

@@ -24,7 +24,7 @@ export function GoogleSignInButton({ label = "Continuar con Google" }: { label?:
       type="button"
       onClick={onClick}
       disabled={loading}
-      className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-full border border-border bg-white px-6 text-sm font-medium text-foreground shadow-sm transition-all hover:bg-foreground/[0.03] active:scale-[0.98] disabled:opacity-60"
+      className="inline-flex h-12 w-full items-center justify-center gap-3 border border-border bg-white px-6 text-sm font-medium text-black transition-all hover:bg-[#f3f3f3] active:scale-[0.98] disabled:opacity-60"
     >
       <GoogleIcon />
       <span>{loading ? "Conectando..." : label}</span>

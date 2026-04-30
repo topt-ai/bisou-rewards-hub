@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
+import { Logo } from "@/components/Logo";
 
 export const Route = createFileRoute("/reset-password")({
   head: () => ({ meta: [{ title: "Nueva contraseña — BISOU" }] }),
@@ -38,7 +39,7 @@ function ResetPasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6">
       <div className="w-full max-w-sm">
-        <h1 className="text-center font-display text-3xl font-bold text-primary">BISOU</h1>
+        <div className="flex justify-center"><Logo size={48} /></div>
         <h2 className="mt-6 text-center font-display text-2xl">Nueva contraseña</h2>
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <div className="space-y-1.5">

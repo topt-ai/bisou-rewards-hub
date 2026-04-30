@@ -38,7 +38,7 @@ function QRPage() {
             value={profile.id}
             size={240}
             bgColor="#ffffff"
-            fgColor="#620608"
+            fgColor="#000000"
             level="H"
             includeMargin={false}
           />

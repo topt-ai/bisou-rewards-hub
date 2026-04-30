@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { roleHomePath, useAuth } from "@/lib/auth-context";
+import { Logo } from "@/components/Logo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,7 +23,7 @@ function SplashPage() {
 
   useEffect(() => {
     if (!loading && session && role) {
-      navigate({ to: roleHomePath(role), replace: true });
+      navigate({ to: roleHomePath(role) });
     }
   }, [loading, session, role, navigate]);
 
@@ -32,9 +33,9 @@ function SplashPage() {
         <p className="text-[10px] font-medium uppercase tracking-[0.4em] text-foreground/60">
           Est. Managua
         </p>
-        <h1 className="mt-3 font-display text-7xl font-bold leading-none text-primary">BISOU</h1>
-        <div className="mt-8 h-1 w-16 overflow-hidden rounded-full bg-foreground/10">
-          <div className="h-full w-1/2 animate-pulse rounded-full bg-primary" />
+        <Logo size={84} className="mt-3" />
+        <div className="mt-8 h-1 w-16 overflow-hidden bg-foreground/10">
+          <div className="h-full w-1/2 animate-pulse bg-primary" />
         </div>
       </div>
     );
@@ -47,7 +48,7 @@ function SplashPage() {
         <p className="text-[10px] font-medium uppercase tracking-[0.4em] text-foreground/60">
           Est. Managua
         </p>
-        <h1 className="mt-3 font-display text-7xl font-bold leading-none text-primary">BISOU</h1>
+        <Logo size={120} className="mt-3" />
         <p className="mt-4 text-sm font-light uppercase tracking-[0.32em] text-foreground/80">
           Munchies · Coffee · Desserts
         </p>

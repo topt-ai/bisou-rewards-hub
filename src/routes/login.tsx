@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth, roleHomePath } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { GoogleSignInButton, OrSeparator } from "@/components/GoogleSignInButton";
+import { Logo } from "@/components/Logo";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -50,8 +51,8 @@ function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-6 py-12">
       <div className="w-full max-w-sm">
-        <Link to="/" className="block text-center">
-          <h1 className="font-display text-4xl font-bold text-primary">BISOU</h1>
+        <Link to="/" className="flex justify-center">
+          <Logo size={56} />
         </Link>
         <h2 className="mt-8 text-center font-display text-2xl text-foreground">
           Bienvenido de vuelta

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth-context";
 import { GoogleSignInButton, OrSeparator } from "@/components/GoogleSignInButton";
+import { Logo } from "@/components/Logo";
 
 export const Route = createFileRoute("/registro")({
   head: () => ({
@@ -73,8 +74,8 @@ function RegistroPage() {
   return (
     <div className="min-h-screen bg-background px-6 py-10">
       <div className="mx-auto w-full max-w-sm">
-        <Link to="/" className="block text-center">
-          <h1 className="font-display text-3xl font-bold text-primary">BISOU</h1>
+        <Link to="/" className="flex justify-center">
+          <Logo size={48} />
         </Link>
         <h2 className="mt-6 text-center font-display text-2xl text-foreground">Crear cuenta</h2>
         <p className="mt-1 text-center text-sm text-muted-foreground">

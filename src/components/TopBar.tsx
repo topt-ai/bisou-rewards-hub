@@ -2,6 +2,7 @@ import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { useNavigate } from "@tanstack/react-router";
+import { Logo } from "@/components/Logo";
 
 export function TopBar({ subtitle }: { subtitle?: string }) {
   const { signOut } = useAuth();
@@ -9,7 +10,7 @@ export function TopBar({ subtitle }: { subtitle?: string }) {
   return (
     <header className="flex items-center justify-between border-b border-border bg-background px-4 py-3">
       <div>
-        <h1 className="font-display text-2xl font-semibold leading-none text-primary">BISOU</h1>
+        <Logo size={28} />
         {subtitle && <p className="mt-1 text-xs text-muted-foreground">{subtitle}</p>}
       </div>
       <Button

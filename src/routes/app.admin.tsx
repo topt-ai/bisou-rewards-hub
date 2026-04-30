@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { LayoutDashboard, Users, Gift, Settings, User } from "lucide-react";
+import { LayoutDashboard, Users, Gift, Settings, User, UtensilsCrossed, Package } from "lucide-react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { TopBar } from "@/components/TopBar";
@@ -44,9 +44,11 @@ function AdminLayout() {
         </main>
         <BottomNav
           items={[
-            { to: "/app/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+            { to: "/app/admin/dashboard", label: "Inicio", icon: LayoutDashboard },
             { to: "/app/admin/clientes", label: "Clientes", icon: Users },
-            { to: "/app/admin/recompensas", label: "Recompensas", icon: Gift },
+            { to: "/app/admin/menu", label: "Menú", icon: UtensilsCrossed },
+            { to: "/app/admin/paquetes", label: "Paquetes", icon: Package },
+            { to: "/app/admin/recompensas", label: "Premios", icon: Gift },
             { to: "/app/admin/ajustes", label: "Ajustes", icon: Settings },
             { to: "/app/admin/perfil", label: "Perfil", icon: User },
           ]}

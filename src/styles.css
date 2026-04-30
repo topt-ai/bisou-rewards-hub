@@ -71,75 +71,76 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-display: "Against", "Playfair Display", Georgia, serif;
+  --font-display: "Playfair Display", "Against", Georgia, serif;
   --font-accent: "Aesthetic", "Times New Roman", Times, serif;
   --font-sans: "Jost", system-ui, -apple-system, sans-serif;
 }
 
 :root {
-  --radius: 0.75rem;
+  /* Brutalist: borders duros, sin radius. */
+  --radius: 0px;
 
-  /* BISOU brand */
-  --cream: oklch(0.892 0.022 60);          /* #e7dcd1 */
-  --near-black: oklch(0.165 0 0);          /* #0a0a0a */
-  --burgundy: oklch(0.32 0.115 25);        /* #620608 */
-  --dusty-blue: oklch(0.74 0.045 240);     /* #94b1c8 */
+  /* BISOU brutalist palette */
+  --cream: #94b1c8;        /* legacy alias kept for compatibility */
+  --near-black: #000000;
+  --burgundy: #94b1c8;     /* legacy alias → celeste */
+  --dusty-blue: #94b1c8;
 
-  /* Semantic tokens — light mode = cream surface */
-  --background: var(--cream);
-  --foreground: var(--near-black);
-  --card: oklch(1 0 0);
-  --card-foreground: var(--near-black);
-  --popover: oklch(1 0 0);
-  --popover-foreground: var(--near-black);
-  --primary: var(--burgundy);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: var(--dusty-blue);
-  --secondary-foreground: var(--near-black);
-  --muted: oklch(0.92 0.012 60);
-  --muted-foreground: oklch(0.45 0.015 60);
-  --accent: var(--burgundy);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.82 0.018 60);
-  --input: oklch(0.86 0.015 60);
-  --ring: var(--burgundy);
-  --chart-1: var(--burgundy);
-  --chart-2: var(--dusty-blue);
-  --chart-3: oklch(0.65 0.12 60);
-  --chart-4: oklch(0.45 0.08 25);
-  --chart-5: var(--near-black);
-  --sidebar: var(--cream);
-  --sidebar-foreground: var(--near-black);
-  --sidebar-primary: var(--burgundy);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.92 0.012 60);
-  --sidebar-accent-foreground: var(--near-black);
-  --sidebar-border: oklch(0.82 0.018 60);
-  --sidebar-ring: var(--burgundy);
+  /* Semantic tokens */
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  --popover: #111111;
+  --popover-foreground: #ffffff;
+  --primary: #94b1c8;
+  --primary-foreground: #000000;
+  --secondary: #94b1c8;
+  --secondary-foreground: #000000;
+  --muted: #0a0a0a;
+  --muted-foreground: #94b1c8;
+  --accent: #94b1c8;
+  --accent-foreground: #000000;
+  --destructive: oklch(0.62 0.24 27);
+  --destructive-foreground: #000000;
+  --border: #94b1c8;
+  --input: #94b1c8;
+  --ring: #94b1c8;
+  --chart-1: #94b1c8;
+  --chart-2: #ffffff;
+  --chart-3: #94b1c8;
+  --chart-4: #ffffff;
+  --chart-5: #94b1c8;
+  --sidebar: #000000;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #94b1c8;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #0a0a0a;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #94b1c8;
+  --sidebar-ring: #94b1c8;
 }
 
 .dark {
-  --background: var(--near-black);
-  --foreground: oklch(1 0 0);
-  --card: oklch(0.22 0 0);
-  --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.22 0 0);
-  --popover-foreground: oklch(1 0 0);
-  --primary: oklch(0.45 0.135 25);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: var(--dusty-blue);
-  --secondary-foreground: var(--near-black);
-  --muted: oklch(0.28 0 0);
-  --muted-foreground: oklch(0.7 0 0);
-  --accent: oklch(0.45 0.135 25);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.6 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.3 0 0);
-  --input: oklch(0.3 0 0);
-  --ring: var(--burgundy);
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  --popover: #111111;
+  --popover-foreground: #ffffff;
+  --primary: #94b1c8;
+  --primary-foreground: #000000;
+  --secondary: #94b1c8;
+  --secondary-foreground: #000000;
+  --muted: #0a0a0a;
+  --muted-foreground: #94b1c8;
+  --accent: #94b1c8;
+  --accent-foreground: #000000;
+  --destructive: oklch(0.62 0.24 27);
+  --destructive-foreground: #000000;
+  --border: #94b1c8;
+  --input: #94b1c8;
+  --ring: #94b1c8;
 }
 
 @layer base {
@@ -162,5 +163,25 @@
   .font-display {
     font-family: var(--font-display);
     letter-spacing: -0.01em;
+  }
+}
+
+/*
+ * Brutalist override.
+ * Hard borders only, no soft shadows or rounded corners.
+ * Avatars and progress bars opt back in via .brutalist-keep-radius.
+ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Re-enable rounded for explicit opt-ins (e.g. avatars, progress fills). */
+  .brutalist-keep-radius,
+  .brutalist-keep-radius * {
+    border-radius: revert !important;
   }
 }

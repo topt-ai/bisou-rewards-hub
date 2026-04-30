@@ -8,18 +8,23 @@ import { Route as ForgotPasswordRoute } from "@/routes/forgot-password";
 import { Route as ResetPasswordRoute } from "@/routes/reset-password";
 import { Route as AppClienteRoute } from "@/routes/app.cliente";
 import { Route as AppClienteInicioRoute } from "@/routes/app.cliente.inicio";
+import { Route as AppClienteMenuRoute } from "@/routes/app.cliente.menu";
 import { Route as AppClienteQrRoute } from "@/routes/app.cliente.qr";
+import { Route as AppClientePaquetesRoute } from "@/routes/app.cliente.paquetes";
 import { Route as AppClienteRecompensasRoute } from "@/routes/app.cliente.recompensas";
 import { Route as AppClientePerfilRoute } from "@/routes/app.cliente.perfil";
 import { Route as AppCajeroRoute } from "@/routes/app.cajero";
 import { Route as AppCajeroEscanearRoute } from "@/routes/app.cajero.escanear";
 import { Route as AppCajeroBuscarRoute } from "@/routes/app.cajero.buscar";
 import { Route as AppCajeroCanjeRoute } from "@/routes/app.cajero.canje";
+import { Route as AppCajeroPaquetesRoute } from "@/routes/app.cajero.paquetes";
 import { Route as AppCajeroPerfilRoute } from "@/routes/app.cajero.perfil";
 import { Route as AppAdminRoute } from "@/routes/app.admin";
 import { Route as AppAdminDashboardRoute } from "@/routes/app.admin.dashboard";
 import { Route as AppAdminClientesRoute } from "@/routes/app.admin.clientes";
 import { Route as AppAdminRecompensasRoute } from "@/routes/app.admin.recompensas";
+import { Route as AppAdminMenuRoute } from "@/routes/app.admin.menu";
+import { Route as AppAdminPaquetesRoute } from "@/routes/app.admin.paquetes";
 import { Route as AppAdminAjustesRoute } from "@/routes/app.admin.ajustes";
 import { Route as AppAdminPerfilRoute } from "@/routes/app.admin.perfil";
 
@@ -47,7 +52,9 @@ export default function App() {
         <Route path="/app/cliente" element={<AppClienteRoute.component />}>
           <Route index element={<Navigate to="inicio" replace />} />
           <Route path="inicio" element={<AppClienteInicioRoute.component />} />
+          <Route path="menu" element={<AppClienteMenuRoute.component />} />
           <Route path="qr" element={<AppClienteQrRoute.component />} />
+          <Route path="paquetes" element={<AppClientePaquetesRoute.component />} />
           <Route path="recompensas" element={<AppClienteRecompensasRoute.component />} />
           <Route path="perfil" element={<AppClientePerfilRoute.component />} />
         </Route>
@@ -57,6 +64,7 @@ export default function App() {
           <Route path="escanear" element={<AppCajeroEscanearRoute.component />} />
           <Route path="buscar" element={<AppCajeroBuscarRoute.component />} />
           <Route path="canje" element={<AppCajeroCanjeRoute.component />} />
+          <Route path="paquetes" element={<AppCajeroPaquetesRoute.component />} />
           <Route path="perfil" element={<AppCajeroPerfilRoute.component />} />
         </Route>
 
@@ -65,6 +73,8 @@ export default function App() {
           <Route path="dashboard" element={<AppAdminDashboardRoute.component />} />
           <Route path="clientes" element={<AppAdminClientesRoute.component />} />
           <Route path="recompensas" element={<AppAdminRecompensasRoute.component />} />
+          <Route path="menu" element={<AppAdminMenuRoute.component />} />
+          <Route path="paquetes" element={<AppAdminPaquetesRoute.component />} />
           <Route path="ajustes" element={<AppAdminAjustesRoute.component />} />
           <Route path="perfil" element={<AppAdminPerfilRoute.component />} />
         </Route>

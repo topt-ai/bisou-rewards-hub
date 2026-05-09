@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Home, QrCode, Gift, User, UtensilsCrossed, Package } from "lucide-react";
+import { Home, QrCode, Gift, User, UtensilsCrossed, Package, History } from "lucide-react";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { BottomNav } from "@/components/BottomNav";
 import { checkAuthAndRole } from "@/lib/route-guards";
@@ -48,6 +48,7 @@ function ClienteLayout() {
             { to: "/app/cliente/qr", label: "Mi QR", icon: QrCode },
             { to: "/app/cliente/paquetes", label: "Paquetes", icon: Package },
             { to: "/app/cliente/recompensas", label: "Recompensas", icon: Gift },
+            { to: "/app/cliente/actividad", label: "Actividad", icon: History },
             { to: "/app/cliente/perfil", label: "Perfil", icon: User },
           ]}
         />

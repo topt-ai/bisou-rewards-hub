@@ -23,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
+import { capitalizeName } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/admin/clientes")({
   head: () => ({ meta: [{ title: "Clientes — Admin BISOU" }] }),
@@ -194,7 +195,7 @@ function ClientesAdminPage() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <p className="truncate font-medium">{r.nombre}</p>
+                  <p className="truncate font-medium">{capitalizeName(r.nombre)}</p>
                   <p className="truncate text-[11px] text-muted-foreground">{r.email}</p>
                 </div>
                 <span className="self-center text-xs font-medium text-primary">{r.puntos} pts</span>
@@ -209,7 +210,7 @@ function ClientesAdminPage() {
           {selected && (
             <>
               <DialogHeader>
-                <DialogTitle className="font-display text-xl">{selected.nombre}</DialogTitle>
+                <DialogTitle className="font-display text-xl">{capitalizeName(selected.nombre)}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 text-sm">
                 <div className="grid grid-cols-2 gap-2 rounded-lg bg-primary/5 p-3 text-xs">

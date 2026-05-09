@@ -5,22 +5,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
-import { ArrowUpRight, ArrowDownRight, Cake } from "lucide-react";
-import { EmptyState } from "@/components/EmptyState";
+import { Cake } from "lucide-react";
 import { PromoBanners } from "@/components/PromoBanners";
+import { capitalizeName } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/cliente/inicio")({
   head: () => ({ meta: [{ title: "Inicio — BISOU" }] }),
   component: InicioPage,
 });
-
-interface Tx {
-  id: string;
-  tipo: string;
-  puntos: number;
-  descripcion: string | null;
-  created_at: string;
-}
 
 interface NextReward {
   nombre: string;
@@ -37,40 +29,25 @@ function isBirthday(fecha: string | null): boolean {
 function InicioPage() {
   const { profile, loading: authLoading } = useAuth();
   const [liveProfile, setLiveProfile] = useState(profile);
-  const [txs, setTxs] = useState<Tx[] | null>(null);
   const [nextReward, setNextReward] = useState<NextReward | null>(null);
 
   useEffect(() => {
     setLiveProfile(profile);
   }, [profile]);
 
-  const fetchTransactions = async (userId: string) => {
-    const { data } = await supabase
-      .from("transactions")
-      .select("id, tipo, puntos, descripcion, created_at")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(5);
-    setTxs(data ?? []);
-  };
-
   useEffect(() => {
     if (!liveProfile) return;
     let active = true;
     (async () => {
-      const [txRes, rewRes] = await Promise.all([
-        supabase.from("transactions").select("id, tipo, puntos, descripcion, created_at").eq("user_id", liveProfile.id).order("created_at", { ascending: false }).limit(5),
-        supabase
-          .from("recompensas")
-          .select("nombre, puntos_requeridos")
-          .eq("activa", true)
-          .gt("puntos_requeridos", liveProfile.puntos)
-          .order("puntos_requeridos", { ascending: true })
-          .limit(1),
-      ]);
+      const { data } = await supabase
+        .from("recompensas")
+        .select("nombre, puntos_requeridos")
+        .eq("activa", true)
+        .gt("puntos_requeridos", liveProfile.puntos)
+        .order("puntos_requeridos", { ascending: true })
+        .limit(1);
       if (!active) return;
-      setTxs(txRes.data ?? []);
-      setNextReward(rewRes.data?.[0] ?? null);
+      setNextReward(data?.[0] ?? null);
     })();
     return () => {
       active = false;
@@ -95,18 +72,6 @@ function InicioPage() {
           }
         },
       )
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "transactions",
-          filter: `user_id=eq.${liveProfile.id}`,
-        },
-        () => {
-          void fetchTransactions(liveProfile.id);
-        },
-      )
       .subscribe();
 
     return () => {
@@ -124,7 +89,7 @@ function InicioPage() {
     );
   }
 
-  const firstName = liveProfile.nombre.split(" ")[0];
+  const firstName = capitalizeName(liveProfile.nombre.split(" ")[0]);
   const progress = nextReward
     ? Math.min(100, Math.round((liveProfile.puntos / nextReward.puntos_requeridos) * 100))
     : 100;
@@ -190,77 +155,6 @@ function InicioPage() {
         </div>
       </Card>
 
-      <section>
-        <div className="mb-3 flex items-center justify-between">
-          <h2 className="font-display text-lg text-foreground">Actividad reciente</h2>
-        </div>
-        {txs === null ? (
-          <div className="space-y-2">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={i} className="h-14 w-full rounded-lg" />
-            ))}
-          </div>
-        ) : txs.length === 0 ? (
-          <EmptyState
-            title="Sin actividad aún"
-            description="Tus transacciones aparecerán aquí."
-          />
-        ) : (
-          <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
-            {txs.map((t) => (
-              <li key={t.id} className="flex items-center gap-3 px-4 py-3">
-                <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-                    t.puntos >= 0 ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"
-                  }`}
-                >
-                  {t.puntos >= 0 ? (
-                    <ArrowUpRight className="h-4 w-4" />
-                  ) : (
-                    <ArrowDownRight className="h-4 w-4" />
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-card-foreground">
-                    {t.descripcion ?? labelForTipo(t.tipo)}
-                  </p>
-                  <p className="text-[11px] text-muted-foreground">
-                    {new Date(t.created_at).toLocaleDateString("es-NI", {
-                      day: "numeric",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </div>
-                <span
-                  className={`font-display text-sm font-semibold ${
-                    t.puntos >= 0 ? "text-emerald-700" : "text-rose-700"
-                  }`}
-                >
-                  {t.puntos >= 0 ? "+" : ""}
-                  {t.puntos}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
     </div>
   );
-}
-
-function labelForTipo(t: string): string {
-  switch (t) {
-    case "suma":
-      return "Puntos acumulados";
-    case "canje":
-      return "Canje de recompensa";
-    case "ajuste":
-      return "Ajuste de puntos";
-    case "bienvenida":
-      return "Bono de bienvenida";
-    default:
-      return t;
-  }
 }

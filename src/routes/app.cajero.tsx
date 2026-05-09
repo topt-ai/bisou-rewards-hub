@@ -4,7 +4,7 @@ import { TopBar } from "@/components/TopBar";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { useAuth } from "@/lib/auth-context";
 import { checkAuthAndRole } from "@/lib/route-guards";
-import { cn } from "@/lib/utils";
+import { cn, capitalizeName } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
 export const Route = createFileRoute("/app/cajero")({
@@ -47,7 +47,7 @@ function CajeroLayout() {
   return (
     <PhoneFrame className="md:max-w-[640px]">
       <div className="flex min-h-screen flex-col">
-        <TopBar subtitle={profile ? `Cajero: ${profile.nombre.split(" ")[0]}` : "Cajero"} />
+        <TopBar subtitle={profile ? `Cajero: ${capitalizeName(profile.nombre.split(" ")[0])}` : "Cajero"} />
         <nav className="flex border-b border-border bg-background">
           {tabs.map((t) => {
             const active = location.pathname === t.to;

@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth-context";
-import { cn } from "@/lib/utils";
+import { cn, capitalizeName } from "@/lib/utils";
 import {
   formatCordoba,
   type Paquete,
@@ -105,7 +105,7 @@ function CajeroPaquetesPage() {
         activo: true,
       });
       if (error) throw error;
-      toast.success(`Paquete activado para ${client.nombre}`);
+      toast.success(`Paquete activado para ${capitalizeName(client.nombre)}`);
       setClient(null);
       setResults(null);
       setQ("");
@@ -200,7 +200,7 @@ function CajeroPaquetesPage() {
                   className="flex w-full items-center justify-between border border-border bg-card p-3 text-left hover:border-primary"
                 >
                   <div>
-                    <p className="font-medium">{r.nombre}</p>
+                    <p className="font-medium">{capitalizeName(r.nombre)}</p>
                     <p className="text-xs text-muted-foreground">{r.email}</p>
                   </div>
                 </button>
@@ -212,7 +212,7 @@ function CajeroPaquetesPage() {
         <>
           <div className="flex items-center justify-between border border-border bg-card p-3">
             <div>
-              <p className="font-medium">{client.nombre}</p>
+              <p className="font-medium">{capitalizeName(client.nombre)}</p>
               <p className="text-xs text-muted-foreground">{client.email}</p>
             </div>
             <Button variant="outline" onClick={() => setClient(null)}>

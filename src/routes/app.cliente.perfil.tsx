@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { LogOut, Pencil, Check } from "lucide-react";
 import { toast } from "sonner";
 import { AvatarUploader } from "@/components/AvatarUploader";
+import { capitalizeName } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/cliente/perfil")({
   head: () => ({ meta: [{ title: "Mi perfil — BISOU" }] }),
@@ -64,11 +65,11 @@ function PerfilPage() {
       <header className="flex flex-col items-center pt-4 text-center">
         <AvatarUploader
           userId={profile.id}
-          nombre={profile.nombre}
+          nombre={capitalizeName(profile.nombre)}
           avatarUrl={profile.avatar_url}
           onUpdated={() => refreshProfile()}
         />
-        <h1 className="mt-4 font-display text-2xl text-foreground">{profile.nombre}</h1>
+        <h1 className="mt-4 font-display text-2xl text-foreground">{capitalizeName(profile.nombre)}</h1>
         <p className="text-sm text-muted-foreground">{profile.email}</p>
       </header>
 

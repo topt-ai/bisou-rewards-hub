@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Search } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
+import { capitalizeName } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/cajero/buscar")({
   head: () => ({ meta: [{ title: "Buscar cliente — BISOU" }] }),
@@ -84,7 +85,7 @@ function BuscarPage() {
               className="flex cursor-pointer items-center justify-between p-4 transition-colors hover:bg-accent/5"
             >
               <div>
-                <p className="font-medium text-card-foreground">{r.nombre}</p>
+                <p className="font-medium text-card-foreground">{capitalizeName(r.nombre)}</p>
                 <p className="text-xs text-muted-foreground">{r.email}</p>
               </div>
               <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">

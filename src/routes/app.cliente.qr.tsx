@@ -5,6 +5,7 @@ import { RefreshCw } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { capitalizeName } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/cliente/qr")({
   head: () => ({ meta: [{ title: "Mi QR — BISOU" }] }),
@@ -43,7 +44,7 @@ function QRPage() {
             includeMargin={false}
           />
         </div>
-        <h2 className="mt-6 font-display text-2xl text-foreground">{profile.nombre}</h2>
+        <h2 className="mt-6 font-display text-2xl text-foreground">{capitalizeName(profile.nombre)}</h2>
         <p className="mt-1 font-mono text-xs uppercase tracking-widest text-muted-foreground">
           ID: {profile.id.slice(0, 8)}
         </p>

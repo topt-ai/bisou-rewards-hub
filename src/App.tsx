@@ -12,6 +12,7 @@ import { Route as AppClienteMenuRoute } from "@/routes/app.cliente.menu";
 import { Route as AppClienteQrRoute } from "@/routes/app.cliente.qr";
 import { Route as AppClientePaquetesRoute } from "@/routes/app.cliente.paquetes";
 import { Route as AppClienteRecompensasRoute } from "@/routes/app.cliente.recompensas";
+import { Route as AppClienteActividadRoute } from "@/routes/app.cliente.actividad";
 import { Route as AppClientePerfilRoute } from "@/routes/app.cliente.perfil";
 import { Route as AppCajeroRoute } from "@/routes/app.cajero";
 import { Route as AppCajeroEscanearRoute } from "@/routes/app.cajero.escanear";
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="qr" element={<AppClienteQrRoute.component />} />
           <Route path="paquetes" element={<AppClientePaquetesRoute.component />} />
           <Route path="recompensas" element={<AppClienteRecompensasRoute.component />} />
+          <Route path="actividad" element={<AppClienteActividadRoute.component />} />
           <Route path="perfil" element={<AppClientePerfilRoute.component />} />
         </Route>
 

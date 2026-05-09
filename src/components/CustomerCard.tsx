@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
+import { capitalizeName } from "@/lib/utils";
 
 export interface CustomerProfile {
   id: string;
@@ -50,7 +51,7 @@ export function CustomerCard({
         .eq("id", customer.id);
       if (upErr) throw upErr;
 
-      toast.success(`✓ ${puntos} puntos agregados a ${customer.nombre.split(" ")[0]}`);
+      toast.success(`✓ ${puntos} puntos agregados a ${capitalizeName(customer.nombre.split(" ")[0])}`);
       onSuccess(newPuntos);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Error al agregar puntos";
@@ -80,7 +81,7 @@ export function CustomerCard({
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-display text-xl text-card-foreground">{customer.nombre}</h3>
+          <h3 className="truncate font-display text-xl text-card-foreground">{capitalizeName(customer.nombre)}</h3>
           <p className="truncate text-xs text-muted-foreground">{customer.email}</p>
           <div className="mt-3 inline-flex items-center rounded-full bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">
             {customer.puntos} pts disponibles

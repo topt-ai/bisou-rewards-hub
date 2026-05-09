@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LogOut } from "lucide-react";
+import { capitalizeName } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/admin/perfil")({
   head: () => ({ meta: [{ title: "Mi perfil — Admin BISOU" }] }),
@@ -29,11 +30,11 @@ function AdminPerfilPage() {
       <header className="flex flex-col items-center pt-4 text-center">
         <AvatarUploader
           userId={profile.id}
-          nombre={profile.nombre}
+          nombre={capitalizeName(profile.nombre)}
           avatarUrl={profile.avatar_url}
           onUpdated={() => refreshProfile()}
         />
-        <h1 className="mt-4 font-display text-2xl text-foreground">{profile.nombre}</h1>
+        <h1 className="mt-4 font-display text-2xl text-foreground">{capitalizeName(profile.nombre)}</h1>
         <p className="text-sm text-muted-foreground">{profile.email}</p>
         <span className="mt-2 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-widest text-primary">
           Administrador

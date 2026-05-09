@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { capitalizeName } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/cajero/canje")({
   head: () => ({ meta: [{ title: "Confirmar canje — BISOU" }] }),
@@ -69,7 +70,7 @@ function CanjePage() {
       return;
     }
     if (selected.puntos < reward.puntos_requeridos) {
-      toast.error(`${selected.nombre.split(" ")[0]} no tiene puntos suficientes`);
+      toast.error(`${capitalizeName(selected.nombre.split(" ")[0])} no tiene puntos suficientes`);
       return;
     }
     setLoading(true);
@@ -98,7 +99,7 @@ function CanjePage() {
         .eq("id", selected.id);
       if (upErr) throw upErr;
 
-      toast.success(`✓ Canje completado: ${reward.nombre} para ${selected.nombre.split(" ")[0]}`);
+      toast.success(`✓ Canje completado: ${reward.nombre} para ${capitalizeName(selected.nombre.split(" ")[0])}`);
       setSelected(null);
       setSelectedReward(null);
       setConfirmOpen(false);
@@ -139,7 +140,7 @@ function CanjePage() {
                 </div>
               )}
               <div className="min-w-0">
-                <p className="truncate font-medium">{selected.nombre}</p>
+                <p className="truncate font-medium">{capitalizeName(selected.nombre)}</p>
                 <p className="truncate text-xs text-muted-foreground">{selected.email}</p>
                 <p className="text-xs font-medium text-primary">{selected.puntos} pts disponibles</p>
               </div>
@@ -185,7 +186,7 @@ function CanjePage() {
             <DialogTitle className="font-display text-xl">Confirmar canje</DialogTitle>
             <DialogDescription>
               ¿Canjear <span className="font-medium text-foreground">{selectedReward?.nombre}</span>{" "}
-              para <span className="font-medium text-foreground">{selected?.nombre}</span>? Se
+              para <span className="font-medium text-foreground">{capitalizeName(selected?.nombre ?? "")}</span>? Se
               descontarán{" "}
               <span className="font-medium text-foreground">
                 {selectedReward?.puntos_requeridos ?? 0} puntos

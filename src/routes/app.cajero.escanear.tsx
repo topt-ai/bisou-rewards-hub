@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CustomerCard, type CustomerProfile } from "@/components/CustomerCard";
 import { QrScannerCard } from "@/components/QrScannerCard";
+import { CajeroPromosInfo } from "@/components/CajeroPromosInfo";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -42,6 +43,8 @@ function EscanearPage() {
           </Button>
         </>
       )}
+
+      <CajeroPromosInfo />
     </div>
   );
 }

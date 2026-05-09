@@ -59,5 +59,18 @@ export interface UserPaqueteUso {
   created_at?: string;
 }
 
+export interface Promocion {
+  id: string;
+  titulo: string;
+  descripcion: string | null;
+  imagen_url: string | null;
+  activa: boolean;
+  fecha_inicio: string | null;
+  fecha_fin: string | null;
+  orden: number;
+  created_by: string | null;
+  created_at?: string;
+}
+
 export const formatCordoba = (n: number) =>
   `C$${n.toLocaleString("es-NI", { maximumFractionDigits: 0 })}`;

@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Card } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, Cake } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
+import { PromoBanners } from "@/components/PromoBanners";
 
 export const Route = createFileRoute("/app/cliente/inicio")({
   head: () => ({ meta: [{ title: "Inicio — BISOU" }] }),
@@ -135,6 +136,8 @@ function InicioPage() {
         <h1 className="font-display text-3xl text-foreground">Hola, {firstName} 👋</h1>
         <p className="mt-1 text-sm text-muted-foreground">Bienvenido a tu BISOU</p>
       </header>
+
+      <PromoBanners />
 
       {isBirthday(liveProfile.fecha_nacimiento) && (
         <div className="flex items-center gap-3 rounded-xl bg-primary px-4 py-3 text-primary-foreground shadow">

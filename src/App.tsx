@@ -25,6 +25,7 @@ import { Route as AppAdminClientesRoute } from "@/routes/app.admin.clientes";
 import { Route as AppAdminRecompensasRoute } from "@/routes/app.admin.recompensas";
 import { Route as AppAdminMenuRoute } from "@/routes/app.admin.menu";
 import { Route as AppAdminPaquetesRoute } from "@/routes/app.admin.paquetes";
+import { Route as AppAdminPromocionesRoute } from "@/routes/app.admin.promociones";
 import { Route as AppAdminAjustesRoute } from "@/routes/app.admin.ajustes";
 import { Route as AppAdminPerfilRoute } from "@/routes/app.admin.perfil";
 
@@ -75,6 +76,7 @@ export default function App() {
           <Route path="recompensas" element={<AppAdminRecompensasRoute.component />} />
           <Route path="menu" element={<AppAdminMenuRoute.component />} />
           <Route path="paquetes" element={<AppAdminPaquetesRoute.component />} />
+          <Route path="promociones" element={<AppAdminPromocionesRoute.component />} />
           <Route path="ajustes" element={<AppAdminAjustesRoute.component />} />
           <Route path="perfil" element={<AppAdminPerfilRoute.component />} />
         </Route>
